@@ -39,9 +39,11 @@ python ./src/data_generation/Generate_Reasoning.py --dataset medqa --sample <num
 
 - **Model Access**
 
-| Model        | Backbone                                                     | Link                                                  |
-| ------------ | ------------------------------------------------------------ | ----------------------------------------------------- |
-| MedReason-8B | [HuatuoGPT-o1-8B](https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-8B) | [Link](https://huggingface.co/UCSC-VLAA/MedReason-8B) |
+| Model             | Base Model                                                   | Link                                                       |
+| ----------------- | ------------------------------------------------------------ | ---------------------------------------------------------- |
+| MedReason-8B      | [HuatuoGPT-o1-8B](https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-8B) | [Link](https://huggingface.co/UCSC-VLAA/MedReason-8B)      |
+| MedReason-Llama   | [Llama-3.1-8B-Instruct](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | [Link](https://huggingface.co/UCSC-VLAA/MedReason-Llama)   |
+| MedReason-Mistral | [Mistral-7B-Instruct-v0.2](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.2) | [Link](https://huggingface.co/UCSC-VLAA/MedReason-Mistral) |
 
 - **Deploy**: we provide a example code for direct inference with MedReason-8B. 
 
