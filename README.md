@@ -1,7 +1,8 @@
 # MedReason: Eliciting Factual Medical Reasoning Steps in LLMs via Knowledge Graphs
 <p align="center">
-📃 <a href="https://arxiv.org/" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/UCSC-VLAA/MedReason-8B" target="_blank">MedReason-8B</a> | 📚 <a href="https://huggingface.co/UCSC-VLAA/MedReason-8B" target="_blank">MedReason Data</a>
+📃 <a href="https://arxiv.org/abs/2504.00993" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/UCSC-VLAA/MedReason-8B" target="_blank">MedReason-8B</a> | 📚 <a href="https://huggingface.co/datasets/UCSC-VLAA/MedReason" target="_blank">MedReason Data</a>
 </p>
+
 
 ## ⚡Introduction
 
@@ -153,11 +154,14 @@ We gratefully acknowledge the inspiring work of [HuatuoGPT-o1](https://github.co
 ## 📖 Citation
 
 ```
-@article{medreason,
-	title={MedReason: Eliciting Factual Medical Reasoning Steps in LLMs via Knowledge Graphs},
-	author={Juncheng Wu and Wenlong Deng and Xingxuan Li and Sheng Liu and Taomian Mi and Yifan Peng and Ziyang Xu and Yi Liu and Hyunjin Cho and Chang-In Choi and Yihan Cao and Hui Ren and Xiang Li and Xiaoxiao Li and Yuyin Zhou},
-	journal={arXiv preprint},
-	year={2025},
+@misc{wu2025medreasonelicitingfactualmedical,
+      title={MedReason: Eliciting Factual Medical Reasoning Steps in LLMs via Knowledge Graphs}, 
+      author={Juncheng Wu and Wenlong Deng and Xingxuan Li and Sheng Liu and Taomian Mi and Yifan Peng and Ziyang Xu and Yi Liu and Hyunjin Cho and Chang-In Choi and Yihan Cao and Hui Ren and Xiang Li and Xiaoxiao Li and Yuyin Zhou},
+      year={2025},
+      eprint={2504.00993},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2504.00993}, 
 }
 ```
 
