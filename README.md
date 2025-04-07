@@ -30,7 +30,7 @@ We provide the code for generating Chain-of-Thought reasoning based on medical Q
 
 1. Set the file path of each datasets in `./configs/dataset_configs.yml`
 2. Fill your Azure endpoint and API key in `./src/data_generation/utils.py`
-3. Run the folloing script
+3. Run the following script
 
 ```bash
 python ./src/data_generation/Generate_Reasoning.py --dataset medqa --sample <number_of_samples> --start_idx 0 --batch_size 1&
