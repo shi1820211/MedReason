@@ -66,7 +66,7 @@ outputs = model.generate(**inputs, max_new_tokens=2048)
 print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 ```
 
-## 🚀 Training
+## 🚀 Training Piepline
 
 Simply Supervised-Finetuning (SFT) using MedReason data improves the LLM’s medical reasoning capability.
 
