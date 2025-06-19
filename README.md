@@ -3,6 +3,11 @@
 📃 <a href="https://arxiv.org/abs/2504.00993" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/UCSC-VLAA/MedReason-8B" target="_blank">MedReason-8B</a> | 📚 <a href="https://huggingface.co/datasets/UCSC-VLAA/MedReason" target="_blank">MedReason Data</a>
 </p>
 
+## 📢 News
+- [🏆 May 26, 2025]Our dataset wins 3rd prize on [Huggingface Reasoning Datasets Competition](https://huggingface.co/blog/bespokelabs/reasoning-datasets-competition)!
+- [📄💥 Apr 1, 2025] Our [arXiv paper](https://arxiv.org/abs/2504.00993) is released.
+
+Star 🌟 us if you think it is helpful!!
 
 ## ⚡Introduction
 
