@@ -3,15 +3,15 @@ import networkx as nx
 import torch
 import pandas as pd
 from sentence_transformers import SentenceTransformer
-from data import QADataset
-import utils
+# from data import QADataset
 import yaml
 import os
 import argparse
 from tqdm import tqdm
 import multiprocessing
-
-total_cost = 0.0
+# from data_generation.data.utils import question_parsers
+from data import QADataset
+import utils
 
 def reasoning_generation(question,          # original question
                             answer,             # original answer
@@ -22,7 +22,8 @@ def reasoning_generation(question,          # original question
                             max_path_number_per_group = 50,
                             temperature = 0.0,
                             max_tokens = 5000,
-                            engine="gpt-4o",
+                            engine="qwen3-32b",  # or "gpt-4o"
+                            logger=utils.init_logger(name="reasoning_generation"),
                             filter_path=False):
     answer_prompt2 = """ 
     You are an expert in the medical domain.
@@ -81,10 +82,12 @@ Conclusion:
                                     topK_reasoning_paths = topK_reasoning_paths,
                                     max_path_number_per_group = max_path_number_per_group,
                                     logger = logger)
-    # if len of output_text is too long, return no reasoning path
-    elif len(output_text) > max_tokens:
-        return "No reasoning path. Too many paths." 
+    
     output_text = '\n'.join([str(idx+1) + ':' + '->'.join(inner_list) for idx,inner_list in enumerate(path_all)])
+    
+    # if len of output_text is too long, return no reasoning path
+    if len(output_text) > max_tokens:
+        return "No reasoning path. Too many paths."
     logger.info(f"reasoning paths used: {output_text}")
     prompt = answer_prompt2.format(question = reformat_question,answer = reformat_answer , paths=output_text)
     result = utils.run_llm(prompt,temperature,max_tokens,engine)
@@ -116,7 +119,7 @@ def process_sample(sample_id):
     
     logger.info(f"Processing sample id {sample_id}.")
 
-    reason = reasoning_generation(question, answer, G, emb_model, nodeemb_dict, filter_path=True)
+    reason = reasoning_generation(question, answer, primekg, emb_model, nodeemb_dict, filter_path=True)
     logger.info(f"Finished sample id {sample_id} with reasoning: {reason}")
     return {
         "id": sample_id,
@@ -137,65 +140,96 @@ if __name__ == '__main__':
     object_dataset_name = args.dataset
     test_samples = args.sample
     
-    with open('./configs/dataset_configs.yml', 'r') as f:
+    current_dir = os.path.dirname(os.path.abspath(__file__))  # src/data_generation目录
+    config_path = os.path.abspath(os.path.join(current_dir, '..', '..', 'configs', 'dataset_configs.yml'))
+
+    print(f"脚本目录：{current_dir}")
+    print(f"配置文件完整路径：{config_path}")
+
+    if not os.path.exists(config_path):
+        print("错误：配置文件不存在！请确认路径")
+        exit(1)
+
+    with open(config_path, 'r') as f:
         dataset_configs = yaml.safe_load(f)
-        # get all the dataset names
-        dataset_names = dataset_configs.keys()
-    assert object_dataset_name in dataset_names
-    
+
+    # 假设你已定义或者从参数获取了object_dataset_name
+    print("配置文件内容示例:", list(dataset_configs.keys()))
+    assert object_dataset_name in dataset_configs
+
     logger = utils.init_logger(name=object_dataset_name)
     logger.info("Start reasoning generation for dataset: " + object_dataset_name)
-    
+
     dataset = QADataset(**dataset_configs[object_dataset_name])
-    
-    primekg = pd.read_csv('/path/to/primeKG.csv', low_memory=False)
-    selected_columns_list = primekg[['x_name','display_relation','y_name']].values.tolist()
+
+    primekg_path = os.path.abspath(os.path.join(current_dir, 'data', 'primeKG.csv'))
+    print("知识图谱路径：", primekg_path)
+    if not os.path.exists(primekg_path):
+        print("❌ 找不到 primeKG.csv，请确认路径！")
+        exit(1)
+    primekg = pd.read_csv(primekg_path, low_memory=False)
+
+    selected_columns_list = primekg[['x_name', 'display_relation', 'y_name']].values.tolist()
     G = utils.build_graph(selected_columns_list)
 
     emb_model = SentenceTransformer("abhinand/MedEmbed-large-v0.1")
-    emb_model.to('cuda')
-    
-    # generate node embeddings first if not exist
-    # utils.generate_node_embeddings(knowledge_graph_path = '/path/to/kg.csv', emb_model_name = 'abhinand/MedEmbed-large-v0.1')
-    nodeemb_dict = torch.load('node_embeddings.pt')
-            
-    # ensure results directory exists
-    if not os.path.exists('./results'):
-        os.makedirs('./results')
-        
-    
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print(f"🔧 当前使用的设备为: {device}")
+    emb_model.to(device)
+
+    # 设定实际路径
+    kg_path = os.path.abspath(os.path.join(current_dir, 'data', 'primeKG.csv'))
+
+    # 调用嵌入生成函数（只生成一次即可）
+    utils.generate_node_embeddings(
+        knowledge_graph_path = kg_path,
+        emb_model_name = 'abhinand/MedEmbed-large-v0.1'
+    )
+
+    nodeemb_dict = torch.load(os.path.abspath(os.path.join(current_dir, '..', 'node_embeddings.pt')))
+
+    results_dir = os.path.abspath(os.path.join(current_dir, '..', 'results'))
+    if not os.path.exists(results_dir):
+        os.makedirs(results_dir)
+
     test_samples = min(len(dataset) - args.start_idx, test_samples)
     if test_samples <= 0:
         logger.info("No samples to process.")
         exit()
-        
+
     end_idx = args.start_idx + test_samples
-        
-    result_file_name = f"./results/{object_dataset_name}_{args.start_idx}_{end_idx}.jsonl"
+
+    result_file_name = os.path.join(results_dir, f"{object_dataset_name}_{args.start_idx}_{end_idx}.jsonl")
 
     if args.batch_size == 1:
         with open(result_file_name, 'w') as f:
             for ids in tqdm(range(args.start_idx, args.start_idx + test_samples)):
                 logger.info(f"Processing {ids}th sample.")
-        
-                # unify the dataloading interface
+
                 sample = dataset[ids]
                 question = sample['question']
                 answer = sample['answer']
                 comparing_reasoning = sample['comparison']
                 options = sample['options']
-        
+
                 logger.info(f"Question: {question}")
                 logger.info(f"Answer: {answer}")
-        
+
                 try:
                     reason = reasoning_generation(question, answer, primekg, emb_model, nodeemb_dict, filter_path=True)
                 except Exception as e:
                     reason = "No reasoning path found. Error: " + str(e)
-        
+
                 logger.info(f"Reasoning: {reason}")
-                data_list = {"id": ids, "question": question, "reasoning": reason, "huatuo": comparing_reasoning, "answer": answer, "options": options} 
-        
+                data_list = {
+                    "id": ids,
+                    "question": question,
+                    "reasoning": reason,
+                    "huatuo": comparing_reasoning,
+                    "answer": answer,
+                    "options": options
+                }
+
                 f.write(json.dumps(data_list) + "\n")
     else:
         with multiprocessing.Pool(
@@ -206,5 +240,3 @@ if __name__ == '__main__':
             results = list(tqdm(pool.imap(process_sample, range(test_samples)), total=test_samples))
             for res in results:
                 f.write(json.dumps(res) + "\n")
-        
-    

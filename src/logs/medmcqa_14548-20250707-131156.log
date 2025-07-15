@@ -1,0 +1,17 @@
+2025-07-07 13:16:28,255 - INFO - Processing sample id 1.
+2025-07-07 13:16:28,257 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 13:19:15,641 - INFO - Reformated question: Which vitamin is supplied from only animal source?
+2025-07-07 13:19:15,641 - INFO - Question entities: ['animal source']
+2025-07-07 13:19:15,641 - INFO - Reformated answer: Vitamin B12 is the vitamin supplied from only animal source.
+2025-07-07 13:19:15,641 - INFO - Result entities: ['Vitamin B12', 'animal source']
+2025-07-07 13:19:15,641 - INFO - Error type: NodeNotFound
+2025-07-07 13:19:15,643 - INFO - animal source
+2025-07-07 13:19:15,643 - INFO - vitamin b12
+2025-07-07 13:19:15,643 - INFO - Error type: NodeNotFound
+2025-07-07 13:19:15,643 - INFO - animal source
+2025-07-07 13:19:15,643 - INFO - animal source
+2025-07-07 13:19:15,643 - INFO - the number of extracted pathes are: 0
+2025-07-07 13:19:15,643 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 13:19:15,643 - INFO - Finished sample id 1 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 13:19:17,803 - INFO - Processing sample id 9.
+2025-07-07 13:19:17,803 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0

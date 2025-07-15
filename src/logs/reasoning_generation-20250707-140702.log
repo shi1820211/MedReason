@@ -1,0 +1,20 @@
+2025-07-07 14:07:49,131 - INFO - Processing sample id 6.
+2025-07-07 14:07:49,132 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 14:11:02,611 - INFO - Reformated question: Abnormal vascular patterns seen with colposcopy in case of cervical intraepithelial neoplasia include punctation, mosaicism, and atypical vessels. The question asks which of these is an exception.
+2025-07-07 14:11:02,614 - INFO - Question entities: ['Punctation', 'Mosaicism', 'Atypical vessels']
+2025-07-07 14:11:02,615 - INFO - Reformated answer: Satellite lesions are the exception and not considered an abnormal vascular pattern in this context.
+2025-07-07 14:11:02,615 - INFO - Result entities: ['Satellite lesions']
+2025-07-07 14:11:02,616 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:02,617 - INFO - punctation
+2025-07-07 14:11:02,617 - INFO - satellite lesions
+2025-07-07 14:11:02,618 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:02,619 - INFO - mosaicism
+2025-07-07 14:11:02,619 - INFO - satellite lesions
+2025-07-07 14:11:02,620 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:02,621 - INFO - atypical vessels
+2025-07-07 14:11:02,621 - INFO - satellite lesions
+2025-07-07 14:11:02,622 - INFO - the number of extracted pathes are: 0
+2025-07-07 14:11:02,622 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 14:11:02,623 - INFO - Finished sample id 6 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 14:11:04,606 - INFO - Processing sample id 12.
+2025-07-07 14:11:04,606 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0

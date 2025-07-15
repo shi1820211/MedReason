@@ -1,0 +1,4 @@
+2025-07-07 16:10:50,104 - INFO - Processing sample id 3.
+2025-07-07 16:10:50,105 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 16:11:07,910 - INFO - Processing sample id 5.
+2025-07-07 16:11:07,911 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0

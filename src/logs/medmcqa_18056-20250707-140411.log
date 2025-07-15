@@ -1,0 +1,26 @@
+2025-07-07 14:07:48,735 - INFO - Processing sample id 2.
+2025-07-07 14:07:48,737 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 14:10:27,417 - INFO - Reformated question: All of the following are surgical options for morbid obesity except -
+2025-07-07 14:10:27,418 - INFO - Question entities: ['morbid obesity']
+2025-07-07 14:10:27,419 - INFO - Reformated answer: Roux en Y Duodenal Bypass is the surgical option that is not used for morbid obesity.
+2025-07-07 14:10:27,419 - INFO - Result entities: ['Roux en Y Duodenal Bypass']
+2025-07-07 14:10:27,419 - INFO - Error type: NodeNotFound
+2025-07-07 14:10:27,419 - INFO - morbid obesity
+2025-07-07 14:10:27,420 - INFO - roux en y duodenal bypass
+2025-07-07 14:10:27,420 - INFO - the number of extracted pathes are: 0
+2025-07-07 14:10:27,420 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 14:10:27,420 - INFO - Finished sample id 2 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 14:10:29,400 - INFO - Processing sample id 10.
+2025-07-07 14:10:29,401 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 14:14:18,851 - INFO - Reformated question: Nagler's reaction is shown by
+2025-07-07 14:14:18,851 - INFO - Question entities: ["Nagler's reaction"]
+2025-07-07 14:14:18,851 - INFO - Reformated answer: Clostridium perfringens is the organism that shows Nagler's reaction.
+2025-07-07 14:14:18,851 - INFO - Result entities: ['Clostridium perfringens']
+2025-07-07 14:14:18,851 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:18,851 - INFO - nagler's reaction
+2025-07-07 14:14:18,851 - INFO - clostridium perfringens
+2025-07-07 14:14:18,851 - INFO - the number of extracted pathes are: 0
+2025-07-07 14:14:18,851 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 14:14:18,851 - INFO - Finished sample id 10 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 14:14:20,831 - INFO - Processing sample id 16.
+2025-07-07 14:14:20,831 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0

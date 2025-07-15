@@ -34,7 +34,7 @@ medqa:
 
 medmcqa:
   file_type: huggingface
-  path: openlifescienceai/medmcqa
+  path: "medmcqa"
   split: train
   parsers:
     question: [{key: question, prefix: "", suffix: ""}] 
@@ -96,3 +96,17 @@ LastHumanity:
     answer: [{key: answer, prefix: "", suffix: ""}]
     comparison: [{key: rationale, prefix: "", suffix: ""}] 
     options: []
+
+demo:
+  file_type: "json"
+  path: "C:/Users/autobio/Desktop/github/MedReason/src/data_generation/data/demo_dataset.jsonl"
+  parsers:
+    question:
+      - { key: "question", prefix: "", suffix: "" }
+    answer:
+      - { key: "answer", prefix: "", suffix: "" }
+    options:
+      - { key: "options", prefix: "", suffix: "" }
+    comparison:
+      - { key: "comparison", prefix: "", suffix: "" }
+

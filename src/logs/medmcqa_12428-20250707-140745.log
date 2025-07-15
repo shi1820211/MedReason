@@ -1,0 +1,23 @@
+2025-07-07 14:07:49,153 - INFO - Processing sample id 7.
+2025-07-07 14:07:49,155 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 14:11:27,717 - INFO - Reformated question: Per rectum examination is not a useful test for diagnosis of Pilonidal sinus. It is epithelium lined tract, situated short distance behind the anus, containing hairs and unhealthy diseased granulation tissue. It is due to penetration of hairs through the skin into subcutaneous tissue. It forms granuloma/unhealthy granulation tissue in the deeper plane. It is of infective origin and occurs in sacral region between the buttocks, umbilicus, axilla.
+2025-07-07 14:11:27,717 - INFO - Question entities: ['Per rectum examination', 'Pilonidal sinus']
+2025-07-07 14:11:27,717 - INFO - Reformated answer: Pilonidal sinus is the condition for which per rectum examination is not a useful diagnostic test.
+2025-07-07 14:11:27,717 - INFO - Result entities: ['Pilonidal sinus', 'Per rectum examination']
+2025-07-07 14:11:27,717 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:27,717 - INFO - per rectum examination
+2025-07-07 14:11:27,717 - INFO - pilonidal sinus
+2025-07-07 14:11:27,717 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:27,717 - INFO - per rectum examination
+2025-07-07 14:11:27,717 - INFO - per rectum examination
+2025-07-07 14:11:27,717 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:27,717 - INFO - pilonidal sinus
+2025-07-07 14:11:27,717 - INFO - pilonidal sinus
+2025-07-07 14:11:27,717 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:27,717 - INFO - pilonidal sinus
+2025-07-07 14:11:27,731 - INFO - per rectum examination
+2025-07-07 14:11:27,731 - INFO - the number of extracted pathes are: 0
+2025-07-07 14:11:27,731 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 14:11:27,732 - INFO - Finished sample id 7 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 14:11:29,718 - INFO - Processing sample id 14.
+2025-07-07 14:11:29,718 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0

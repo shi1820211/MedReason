@@ -1,0 +1,131 @@
+2025-07-07 14:07:48,204 - INFO - Processing sample id 5.
+2025-07-07 14:07:48,205 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 14:09:25,415 - INFO - Reformated question: Scrub typhus is transmitted by: September 2004
+2025-07-07 14:09:25,416 - INFO - Question entities: ['Scrub typhus']
+2025-07-07 14:09:25,416 - INFO - Reformated answer: Mite is the vector responsible for transmitting Scrub typhus.
+2025-07-07 14:09:25,416 - INFO - Result entities: ['Mite']
+2025-07-07 14:09:25,416 - INFO - Error type: NodeNotFound
+2025-07-07 14:09:25,416 - INFO - scrub typhus
+2025-07-07 14:09:25,416 - INFO - mite
+2025-07-07 14:09:25,417 - INFO - the number of extracted pathes are: 0
+2025-07-07 14:09:25,417 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 14:09:25,417 - INFO - Finished sample id 5 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 14:09:27,399 - INFO - Processing sample id 8.
+2025-07-07 14:09:27,399 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 14:14:17,148 - INFO - Reformated question: Characteristics of Remifentanyl ¨C a) Metabolised by plasma esterase b) Short half life c) More potent than Alfentanil d) Dose reduced in hepatic and renal disease e) Duration of action more than Alfentanyl
+2025-07-07 14:14:17,154 - INFO - Question entities: ['Remifentanil', 'plasma esterase', 'hepatic disease', 'renal disease', 'Alfentanil', 'potency']
+2025-07-07 14:14:17,155 - INFO - Reformated answer: Remifentanil is the shortest acting opioid due to its metabolism by plasma esterase ¡ú dose adjustment is not needed in liver or kidney disease. It is more potent than alfentanil : Order of potency is Sufentanil > Fentanyl = Remifentanil > Alfentanil.
+2025-07-07 14:14:17,155 - INFO - Result entities: ['Remifentanil', 'plasma esterase', 'hepatic disease', 'renal disease', 'Alfentanil', 'potency']
+2025-07-07 14:14:17,155 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,155 - INFO - remifentanil
+2025-07-07 14:14:17,155 - INFO - remifentanil
+2025-07-07 14:14:17,155 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,155 - INFO - remifentanil
+2025-07-07 14:14:17,155 - INFO - plasma esterase
+2025-07-07 14:14:17,156 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,156 - INFO - remifentanil
+2025-07-07 14:14:17,156 - INFO - hepatic disease
+2025-07-07 14:14:17,156 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,156 - INFO - remifentanil
+2025-07-07 14:14:17,156 - INFO - renal disease
+2025-07-07 14:14:17,156 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,156 - INFO - remifentanil
+2025-07-07 14:14:17,157 - INFO - alfentanil
+2025-07-07 14:14:17,157 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,157 - INFO - remifentanil
+2025-07-07 14:14:17,157 - INFO - potency
+2025-07-07 14:14:17,157 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,157 - INFO - plasma esterase
+2025-07-07 14:14:17,157 - INFO - remifentanil
+2025-07-07 14:14:17,157 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,158 - INFO - plasma esterase
+2025-07-07 14:14:17,158 - INFO - plasma esterase
+2025-07-07 14:14:17,158 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,158 - INFO - plasma esterase
+2025-07-07 14:14:17,158 - INFO - hepatic disease
+2025-07-07 14:14:17,158 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,158 - INFO - plasma esterase
+2025-07-07 14:14:17,158 - INFO - renal disease
+2025-07-07 14:14:17,159 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,159 - INFO - plasma esterase
+2025-07-07 14:14:17,159 - INFO - alfentanil
+2025-07-07 14:14:17,159 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,159 - INFO - plasma esterase
+2025-07-07 14:14:17,159 - INFO - potency
+2025-07-07 14:14:17,159 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,160 - INFO - hepatic disease
+2025-07-07 14:14:17,160 - INFO - remifentanil
+2025-07-07 14:14:17,160 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,160 - INFO - hepatic disease
+2025-07-07 14:14:17,160 - INFO - plasma esterase
+2025-07-07 14:14:17,160 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,160 - INFO - hepatic disease
+2025-07-07 14:14:17,161 - INFO - hepatic disease
+2025-07-07 14:14:17,161 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,161 - INFO - hepatic disease
+2025-07-07 14:14:17,161 - INFO - renal disease
+2025-07-07 14:14:17,161 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,161 - INFO - hepatic disease
+2025-07-07 14:14:17,161 - INFO - alfentanil
+2025-07-07 14:14:17,161 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,162 - INFO - hepatic disease
+2025-07-07 14:14:17,162 - INFO - potency
+2025-07-07 14:14:17,162 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,162 - INFO - renal disease
+2025-07-07 14:14:17,162 - INFO - remifentanil
+2025-07-07 14:14:17,162 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,162 - INFO - renal disease
+2025-07-07 14:14:17,162 - INFO - plasma esterase
+2025-07-07 14:14:17,163 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,163 - INFO - renal disease
+2025-07-07 14:14:17,163 - INFO - hepatic disease
+2025-07-07 14:14:17,163 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,163 - INFO - renal disease
+2025-07-07 14:14:17,163 - INFO - renal disease
+2025-07-07 14:14:17,164 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,164 - INFO - renal disease
+2025-07-07 14:14:17,164 - INFO - alfentanil
+2025-07-07 14:14:17,164 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,164 - INFO - renal disease
+2025-07-07 14:14:17,164 - INFO - potency
+2025-07-07 14:14:17,164 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,165 - INFO - alfentanil
+2025-07-07 14:14:17,165 - INFO - remifentanil
+2025-07-07 14:14:17,165 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,165 - INFO - alfentanil
+2025-07-07 14:14:17,165 - INFO - plasma esterase
+2025-07-07 14:14:17,165 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,165 - INFO - alfentanil
+2025-07-07 14:14:17,165 - INFO - hepatic disease
+2025-07-07 14:14:17,166 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,166 - INFO - alfentanil
+2025-07-07 14:14:17,166 - INFO - renal disease
+2025-07-07 14:14:17,166 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,166 - INFO - alfentanil
+2025-07-07 14:14:17,166 - INFO - alfentanil
+2025-07-07 14:14:17,166 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,167 - INFO - alfentanil
+2025-07-07 14:14:17,167 - INFO - potency
+2025-07-07 14:14:17,167 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,167 - INFO - potency
+2025-07-07 14:14:17,167 - INFO - remifentanil
+2025-07-07 14:14:17,167 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,167 - INFO - potency
+2025-07-07 14:14:17,168 - INFO - plasma esterase
+2025-07-07 14:14:17,168 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,168 - INFO - potency
+2025-07-07 14:14:17,168 - INFO - hepatic disease
+2025-07-07 14:14:17,168 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,168 - INFO - potency
+2025-07-07 14:14:17,168 - INFO - renal disease
+2025-07-07 14:14:17,168 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,169 - INFO - potency
+2025-07-07 14:14:17,169 - INFO - alfentanil
+2025-07-07 14:14:17,169 - INFO - Error type: NodeNotFound
+2025-07-07 14:14:17,169 - INFO - potency
+2025-07-07 14:14:17,169 - INFO - potency
+2025-07-07 14:14:17,169 - INFO - the number of extracted pathes are: 0
+2025-07-07 14:14:17,169 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 14:14:17,170 - INFO - Finished sample id 8 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 14:14:19,209 - INFO - Processing sample id 15.
+2025-07-07 14:14:19,209 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0

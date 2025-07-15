@@ -1,14 +1,24 @@
 from datasets import load_dataset
 from torch.utils.data import Dataset
+import os
 
-# now get a parser class for the dataset, unify the getting of data interface
 class QADataset(Dataset):
-    def __init__(self, file_type, path, parsers, split = 'train', **kwargs):
+    def __init__(self, file_type, path, parsers, split='train', **kwargs):
         if file_type == 'huggingface':
-            self.ds = load_dataset(path, **kwargs)[split]
+            self.ds = load_dataset(path, **kwargs, download_mode="force_redownload")[split]
         else:
-            self.ds = load_dataset(file_type, data_files=path)[split]
+            abs_path = os.path.abspath(path) if isinstance(path, str) else path
+            self.ds = load_dataset(
+                file_type,
+                data_files=abs_path,
+                download_mode="force_redownload",
+                **kwargs,
+                cache_dir=None
+            )[split]
         self.parsers = parsers
+    
+
+
         
     def __len__(self):
         return len(self.ds)

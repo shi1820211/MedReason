@@ -1,0 +1,29 @@
+2025-07-07 14:07:48,349 - INFO - Processing sample id 0.
+2025-07-07 14:07:48,351 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 14:09:57,937 - INFO - Reformated question: Chronic urethral obstruction due to benign prostatic hyperplasia can lead to changes in the kidney parenchyma. This obstruction, caused by urinary calculi, prostatic hyperplasia, tumors, normal pregnancy, uterine prolapse, or functional disorders, results in hydronephrosis, which is characterized by dilatation of the renal pelvis and calculus, leading to progressive atrophy of the kidney due to obstruction of urine outflow.
+2025-07-07 14:09:57,937 - INFO - Question entities: ['Chronic urethral obstruction', 'Benign prostatic hyperplasia', 'Hydronephrosis']
+2025-07-07 14:09:57,937 - INFO - Reformated answer: The resulting change in the kidney parenchyma is atrophy.
+2025-07-07 14:09:57,937 - INFO - Result entities: ['Atrophy']
+2025-07-07 14:09:57,948 - INFO - Error type: NodeNotFound
+2025-07-07 14:09:57,949 - INFO - chronic urethral obstruction
+2025-07-07 14:09:57,950 - INFO - atrophy
+2025-07-07 14:09:57,951 - INFO - Error type: NodeNotFound
+2025-07-07 14:09:57,952 - INFO - benign prostatic hyperplasia
+2025-07-07 14:09:57,952 - INFO - atrophy
+2025-07-07 14:09:57,952 - INFO - Error type: NodeNotFound
+2025-07-07 14:09:57,953 - INFO - hydronephrosis
+2025-07-07 14:09:57,953 - INFO - atrophy
+2025-07-07 14:09:57,954 - INFO - the number of extracted pathes are: 0
+2025-07-07 14:09:57,954 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 14:09:57,955 - INFO - Finished sample id 0 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 14:09:59,925 - INFO - Processing sample id 9.
+2025-07-07 14:09:59,925 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 14:14:32,017 - INFO - Reformated question: Hypomimia is ? Explanation: Ans. C. Deficit of expression by gesture. Hypomimia or amimia is a deficit or absence of expression by gesture or mimicry. This is usually most obvious as a lack of facial expressive mobility (mask-like facies). This is a feature of frontal subcoical disease.
+2025-07-07 14:14:32,018 - INFO - Question entities: []
+2025-07-07 14:14:32,018 - INFO - Reformated answer: Hypomimia is defined as a deficit of expression by gesture.
+2025-07-07 14:14:32,018 - INFO - Result entities: []
+2025-07-07 14:14:32,019 - INFO - the number of extracted pathes are: 0
+2025-07-07 14:14:32,019 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 14:14:32,019 - INFO - Finished sample id 9 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 14:14:34,002 - INFO - Processing sample id 17.
+2025-07-07 14:14:34,002 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0

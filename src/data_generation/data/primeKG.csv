@@ -1,0 +1,3 @@
+x_type,x_name,display_relation,y_name,y_type
+Disease,感冒,causes,发热,Symptom
+Disease,肺炎,causes,咳嗽,Symptom

@@ -6,28 +6,36 @@ import torch
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 import random
-
+import requests
 import logging
+import torch
+import re
 
 # Global variable to hold API cost across multiple LLM calls
 api_total_cost = 0.0
 
 clients = {
-    "gpt-4": {
-        'endpoint': "YOUR AZURE ENDPOINT",
-        'api_key': "YOUR API KEY",
-        'api_version': "2024-12-01-preview",
-        'name': 'gpt-4-1106-preview-nofilter',
-        'input_price': 2.75 / 10 ** 6,  # input price per Million tokens
-        'output_price': 11.0 / 10 ** 6, # output price per Million tokens
-        },
-    "gpt-4o": {
-        'endpoint': "YOUR AZURE ENDPOINT",
-        'api_key': "YOUR API KEY",
-        'api_version': "2024-12-01-preview",
-        'name': 'gpt-4o-0806-nofilter-global',
-        'input_price': 2.75 / 10 ** 6, # input price per Million tokens
-        'output_price': 11.0 / 10 ** 6, # output price per Million tokens
+    # "gpt-4": {
+    #     'endpoint': "YOUR AZURE ENDPOINT",
+    #     'api_key': "YOUR API KEY",
+    #     'api_version': "2024-12-01-preview",
+    #     'name': 'gpt-4-1106-preview-nofilter',
+    #     'input_price': 2.75 / 10 ** 6,  # input price per Million tokens
+    #     'output_price': 11.0 / 10 ** 6, # output price per Million tokens
+    #     },
+    # "gpt-4o": {
+    #     'endpoint': "YOUR AZURE ENDPOINT",
+    #     'api_key': "YOUR API KEY",
+    #     'api_version': "2024-12-01-preview",
+    #     'name': 'gpt-4o-0806-nofilter-global',
+    #     'input_price': 2.75 / 10 ** 6, # input price per Million tokens
+    #     'output_price': 11.0 / 10 ** 6, # output price per Million tokens
+    #     },
+    "qwen3-32b": {
+            'endpoint': "http://172.31.11.20:11555/v1",
+            'api_key': "at-llm",  # Qwen API key
+            'api_version': "",
+            'name': 'Qwen3-32B',
         }
 }
 
@@ -35,8 +43,15 @@ def init_logger(name=''):
     logger = logging.getLogger(__name__)
     # set the logging level to INFO
     logger.setLevel(logging.INFO)
+    
+    # 确保logs目录存在
+    import os
+    logs_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'logs'))
+    if not os.path.exists(logs_dir):
+        os.makedirs(logs_dir)
+    
     # save the log to a file
-    handler = logging.FileHandler('logs/{name}-{time}.log'.format(name=name, time=time.strftime("%Y%m%d-%H%M%S")))
+    handler = logging.FileHandler(os.path.join(logs_dir, '{name}-{time}.log'.format(name=name, time=time.strftime("%Y%m%d-%H%M%S"))))
     handler.setLevel(logging.INFO)
     # create a logging format
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
@@ -46,13 +61,36 @@ def init_logger(name=''):
     return logger
 
 def get_json_from_generated_text(text):
-    # extract substring between the first '{' and the last '}'
-    start = text.find("{")
-    end = text.rfind("}")
-    json_str = text[start:end+1]
-    json_obj = json.loads(json_str)
-    
-    return json_obj
+    if not isinstance(text, str):
+        print("❌ get_json_from_generated_text 输入不是字符串，实际类型：", type(text))
+        return {"Entity": []}
+    match = re.search(r'\{[\s\S]*?\}', text)
+    if not match:
+        print("❌ 未找到合法的 JSON 字符串，原始内容如下：")
+        print(repr(text))
+        return {"Entity": []}
+    json_str = match.group(0)
+    # 单引号转双引号
+    json_str_fixed = json_str.replace("'", '"')
+    # None转null
+    json_str_fixed = json_str_fixed.replace('None', 'null')
+    # 结尾多余逗号
+    json_str_fixed = re.sub(r',\s*}', '}', json_str_fixed)
+    json_str_fixed = re.sub(r',\s*]', ']', json_str_fixed)
+    # 多次补逗号：在 "value" "key" 之间加逗号，直到没有可补的
+    for _ in range(5):
+        json_str_fixed_new = re.sub(r'("[^"]+"\s*:\s*"[^"]+")\s+("[^"]+"\s*:)', r'\1, \2', json_str_fixed)
+        json_str_fixed_new = re.sub(r'(\d|true|false|null)\s+("[^"]+"\s*:)', r'\1, \2', json_str_fixed_new, flags=re.IGNORECASE)
+        if json_str_fixed_new == json_str_fixed:
+            break
+        json_str_fixed = json_str_fixed_new
+    try:
+        json_obj = json.loads(json_str_fixed)
+        return json_obj
+    except Exception as e:
+        print("❌ JSON 解析失败，最终修正内容如下：")
+        print(repr(json_str_fixed))
+        return {"Entity": []}
 
 def build_graph(graph: list) -> nx.Graph:
     G = nx.Graph()
@@ -76,16 +114,17 @@ def get_topk_similar_entities(entity, knowledge_graph, emb_model,nodeemb_dict, k
     topk_similarity = similarity[0][idx]
     top1_similarity = topk_similarity[0][0].item()
     
-    idx = idx[similarity[0][idx] > filter_threshold]
+    # 过滤相似度大于阈值的索引
+    filtered_idx = idx[0][similarity[0][idx[0]] > filter_threshold]
     
     
-    if len(idx) == 0:
+    if len(filtered_idx) == 0:
         return [], top1_similarity
-    elif len(idx) == 1:
-        similar_entity = node_entities_with_type[idx[0]]
+    elif len(filtered_idx) == 1:
+        similar_entity = node_entities_with_type[filtered_idx[0]]
         return [similar_entity], top1_similarity
     else:
-        return node_entities_with_type[idx].tolist(), top1_similarity
+        return node_entities_with_type[filtered_idx].tolist(), top1_similarity
     
     
 def find_all_path_KG(question_entities,result_entities,G):
@@ -97,7 +136,9 @@ def find_all_path_KG(question_entities,result_entities,G):
 
 def generate_node_embeddings(knowledge_graph_path = '/path/to/kg.csv', emb_model_name = 'abhinand/MedEmbed-large-v0.1'):
     knowledge_graph = pd.read_csv(knowledge_graph_path, low_memory=False)
-    emb_model = SentenceTransformer(emb_model_name).to('cuda')
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    print(f"🔧 当前生成节点嵌入时使用设备：{device}")
+    emb_model = SentenceTransformer(emb_model_name).to(device)
     types = knowledge_graph['x_type'].unique()
     nodeemb_dict = {}
     for t in types:
@@ -105,7 +146,11 @@ def generate_node_embeddings(knowledge_graph_path = '/path/to/kg.csv', emb_model
         entities_in_types = knowledge_graph.query('x_type=="{}"'.format(t))['x_name'].unique()
         type_embeddings = emb_model.encode(list(entities_in_types))
         nodeemb_dict[t] = type_embeddings
-    torch.save(nodeemb_dict, 'node_embeddings.pt')
+    # 保存到正确的位置
+    import os
+    save_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'node_embeddings.pt'))
+    torch.save(nodeemb_dict, save_path)
+    print(f"节点嵌入已保存到: {save_path}")
     return
 
 def compute_usage(response, engine):
@@ -123,58 +168,69 @@ def compute_usage(response, engine):
 
     return cost
 
-def run_llm(prompt, temperature = 0.0, max_tokens = 3000, engine="gpt-4o", max_attempt = 10):
-    global api_total_cost  # declare to modify the global variable
-    client = AzureOpenAI(
-        azure_endpoint=clients[engine]['endpoint'],
-        api_key=clients[engine]['api_key'],
-        api_version=clients[engine]['api_version']
-    )
-        
-    if engine == "o1-preview":
-        messages = []
+import requests
+
+def run_llm(prompt, temperature=0.0, max_tokens=3000, engine="qwen3-32b", max_attempt=10):
+    global api_total_cost
+    client_config = clients[engine]
+
+    # 自定义 API 方式（Qwen 本地部署）
+    if engine == "qwen3-32b":
+        messages = [{"role": "user", "content": prompt}]
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {client_config['api_key']}"
+        }
+        payload = {
+            "model": client_config['name'],
+            "messages": messages,
+            "temperature": temperature,
+            "max_tokens": max_tokens
+        }
+        attempt = 0
+        while attempt < max_attempt:
+            attempt += 1
+            try:
+                response = requests.post(
+                    f"{client_config['endpoint']}/chat/completions",
+                    headers=headers,
+                    json=payload
+                )
+                if response.status_code == 200:
+                    return response.json()["choices"][0]["message"]["content"]
+                else:
+                    print("Error code:", response.status_code, "-", response.text)
+                    time.sleep(2)
+            except Exception as e:
+                print(e)
+                time.sleep(2)
+        return "openai error, retry"
+
+    # Azure OpenAI 调用方式
     else:
-        messages = [{"role":"system","content":"You are an AI assistant that helps people find information."}]
-    message_prompt = {"role":"user","content":prompt}
-    messages.append(message_prompt)
-    flag = 0
-    while(flag == 0 and max_attempt > 0):
-        max_attempt -= 1
+        from openai import AzureOpenAI
+        client = AzureOpenAI(
+            azure_endpoint=client_config['endpoint'],
+            api_key=client_config['api_key'],
+            api_version=client_config['api_version']
+        )
+        messages = [{"role": "user", "content": prompt}]
         try:
-            if engine in {"o1", "o3-mini", "o1-preview"}:
-                response = client.chat.completions.create(
-                    model=clients[engine]['name'],
-                    messages = messages,
-                    max_completion_tokens=max_tokens,
-                    frequency_penalty=0,)
-            elif engine == "gpt-3.5-turbo" or engine == "gpt-4":
-                response = client.chat.completions.create(
-                    model=clients[engine]['name'],
-                    messages = messages,
-                    temperature=temperature,
-                    max_tokens=max_tokens + len(messages[0]['content']),
-                    frequency_penalty=0,)
-            else:
-                response = client.chat.completions.create(
-                    model=clients[engine]['name'],
-                    messages = messages,
-                    temperature=temperature,
-                    max_completion_tokens=max_tokens,
-                    frequency_penalty=0,)
+            response = client.chat.completions.create(
+                model=client_config['name'],
+                messages=messages,
+                temperature=temperature,
+                max_tokens=max_tokens
+            )
             result = response.choices[0].message.content
-            cost = compute_usage(response, engine)
-            # Update the global API cost counter
-            api_total_cost += cost["total"]
-            # print(f"Total API cost so far (accumulated in run_llm calls): {api_total_cost}")
-            flag = 1
+            # api_total_cost += compute_usage(response, engine)["total"]  # 如果有价格信息可加上
+            return result
         except Exception as e:
             print(e)
-            result= "openai error, retry"
-            print("openai error, retry")
-            time.sleep(2)
-    return result
-    
-def coarse_entity_extraction(text,temperature = 0.0, max_tokens = 3000, engine="gpt-4o"):
+            return "openai error, retry"
+
+
+def coarse_entity_extraction(text,temperature = 0.0, max_tokens = 3000, engine="qwen3-32b"):
     Extract_prompt = """ You are a helpful, pattern-following medical assistant. 
 Given the text in a medical or biomedical context, precisely extract all entities from the text. 
 
@@ -191,6 +247,8 @@ The type of each entity MUST STRICTLY BELONG to one type from:
 8. exposure 
 9. pathway 
 10. anatomy
+
+IMPORTANT: Your output MUST be strictly valid JSON, and MUST NOT contain any explanation, thinking, or any other text. Only output the JSON.
 
 ```json
 {{
@@ -211,12 +269,12 @@ output:
 ```json
 {{
 "Entity": [
-    {{"id": "1", "type": "symptoms", "name": "shortness of breath"}},
-    {{"id": "2", "type": "symptoms", "name": "yellow-green sputum"}},
-    {{"id": "3", "type": "diseases", "name": "COPD"}},
-    {{"id": "4", "type": "symptoms", "name": "nasal prongs"}},
-    {{"id": "5", "type": "drugs", "name": "PARACIP"}},
-    {{"id": "6", "type": "drugs", "name": "AUGMENTIN"}}
+    {{"id": "1", "type": "effect/phenotype", "name": "shortness of breath"}},
+    {{"id": "2", "type": "effect/phenotype", "name": "yellow-green sputum"}},
+    {{"id": "3", "type": "disease", "name": "COPD"}},
+    {{"id": "4", "type": "effect/phenotype", "name": "nasal prongs"}},
+    {{"id": "5", "type": "drug", "name": "PARACIP"}},
+    {{"id": "6", "type": "drug", "name": "AUGMENTIN"}}
 ]
 }}
 ```
@@ -228,11 +286,23 @@ text:
 output:
 """ 
     prompt = Extract_prompt.format(text=text)
-    result = run_llm(prompt,temperature,max_tokens,engine)
-    return result
+    for _ in range(3):  # 最多重试3次
+        result = run_llm(prompt,temperature,max_tokens,engine)
+        # 只保留第一个 { 到最后一个 } 之间的内容
+        start = result.find("{")
+        end = result.rfind("}")
+        if start != -1 and end != -1 and end > start:
+            json_str = result[start:end+1]
+            try:
+                json.loads(json_str)
+                return result
+            except Exception:
+                continue
+    # 兜底，返回空实体
+    return '{"Entity": []}'
 
 
-def most_correlated_enetity_selection(question, query_entity, similar_entities, temperature = 0.0, max_tokens = 3000, engine="gpt-4o"):
+def most_correlated_enetity_selection(question, query_entity, similar_entities, temperature = 0.0, max_tokens = 3000, engine="qwen3-32b"):
     Reformat_prompt = """ You are a helpful, pattern-following medical assistant.
     Given a medical question and corresponding answer, an query entity which is extracted from the question, and a list of similar entities.
     Select ONE most correlated entity from the list of similar entities based on the question and query entity.
@@ -276,7 +346,7 @@ def most_correlated_enetity_selection(question, query_entity, similar_entities, 
     return result
 
 
-def QA_reformat_based_on_entity(question, answer, entity_list_text, temperature = 0.0, max_tokens = 5000, engine="gpt-4o"):
+def QA_reformat_based_on_entity(question, answer, entity_list_text, temperature = 0.0, max_tokens = 5000, engine="qwen3-32b"):
     Reformat_prompt = """ You are a helpful, pattern-following medical assistant.
 Given a medical question and answer, and all a list of entities.
 You need to reformat the question and answer into a pair of description and conclusion.
@@ -288,197 +358,35 @@ However, you CAN NOT ADD ANY INFORMATION that is not in the question or answer.
 ### Output Format
 Strictly follow the JSON structure below.
 
-```json
-{{
-"description": {{
-    "text" : "The description of the medical question.",
-    "entity": [list of entities in the description, should not be empty]
-    }},
-"conclusion": {{
-    "text" : "The conclusion of the medical question.",
-    "entity": [list of entities in the description, should not be empty]
-    }}
-}}
-```
-
-### Example
-question: 
-A 21-year-old sexually active male complains of fever, pain during urination, and inflammation and pain in the right knee. 
-A culture of the joint fluid shows a bacteria that does not ferment maltose and has no polysaccharide capsule. 
-The physician orders antibiotic therapy for the patient. The mechanism of action given blocks cell wall synthesis, which of the following was given?
-
-answer: 
-Ceftriaxone
-
-entity list:
-1.Fever
-2.Knee pain
-3.Ceftriaxone
-
-output:
-```json
-{{
-"description": {{
-    "text" : "A 21-year-old sexually active male complains of fever, pain during urination, and inflammation and pain in the right knee. A culture of the joint fluid shows a bacteria that does not ferment maltose and has no polysaccharide capsule. The physician orders antibiotic therapy for the patient.",
-    "entities": ["Fever", "Knee pain"]
-    }},
-"conclusion": {{
-    "text" : "Ceftriaxone is the medication given that blocks cell wall synthesis.",
-    "entities": ["Ceftriaxone"]
-    }}
-}}
-```
-
-### Input
-question:
-{question}
-
-answer:
-{answer}
-
-entity list:
-{entity_list_text}
-
-output:
 """
-    Reformat_prompt = Reformat_prompt.format(question=question, answer=answer, entity_list_text=entity_list_text)
-    result = run_llm(Reformat_prompt,temperature,max_tokens,engine)
-    return result
 
-def QA_reformat_with_entity_extraction(question, answer, knowledge_graph, emb_model,nodeemb_dict, temperature = 0.0, max_tokens = 5000, engine="gpt-4o"):
-    QA_text = '''Question: {question}
-    Answer: {answer}'''.format(question=question, answer=answer)
-    
-    all_entities = coarse_entity_extraction(QA_text,temperature,max_tokens,engine)
+def QA_reformat_with_entity_extraction(question, answer, knowledge_graph, emb_model, nodeemb_dict, temperature = 0.0, max_tokens = 5000, engine="qwen3-32b"):
+    print('【DEBUG】knowledge_graph type:', type(knowledge_graph))
+    print('【DEBUG】knowledge_graph columns:', getattr(knowledge_graph, 'columns', None))
+    QA_text = f"""Question: {question}\nAnswer: {answer}"""
+    all_entities = coarse_entity_extraction(QA_text, temperature, max_tokens, engine)
     all_entities = get_json_from_generated_text(all_entities)
     type_set = set(knowledge_graph['x_type'].unique())
-    # using the following code for multiprocessing
-    # x_types_dict = nx.get_node_attributes(knowledge_graph, 'x_type')
-    # type_set = set(x_types_dict.values())
     result_entities = []
     for entity in all_entities["Entity"]:
         if entity["type"] not in type_set:
             continue
-        similar_entities, top1_similarity = get_topk_similar_entities(entity, knowledge_graph, emb_model,nodeemb_dict, k=10, filter_threshold = 0.7)
-        
+        similar_entities, top1_similarity = get_topk_similar_entities(entity, knowledge_graph, emb_model, nodeemb_dict, k=10, filter_threshold=0.7)
         if similar_entities == []:
             continue
-
         selected_entity = None
-        # if perfect match, directly select the entity
         for ent in similar_entities:
             if entity["name"].lower() == ent.lower():
                 selected_entity = {"name": ent, "id": str(similar_entities.index(ent))}
                 break
-            
-        if top1_similarity > 0.85 and selected_entity == None:
+        if top1_similarity > 0.85 and selected_entity is None:
             selected_entity = {"name": similar_entities[0], "id": str(0)}
-            
-        # if no perfect match, use the question to select the most correlated entity
-        if selected_entity == None:
+        if selected_entity is None:
             selected_entity = most_correlated_enetity_selection(QA_text, entity["name"], similar_entities)
             selected_entity = get_json_from_generated_text(selected_entity)["selected_entity"]
-            
         if selected_entity["name"] != "NONE":
-                result_entities.append(similar_entities[int(selected_entity["id"])])
-    # remove duplicated entities
+            result_entities.append(similar_entities[int(selected_entity["id"])])
     result_entities = list(set(result_entities))
-    entities_text = '\n'.join(['{}.{}'.format(idx+1, ent) for idx, ent in enumerate(result_entities)])
+    entities_text = '\n'.join([f"{idx+1}.{ent}" for idx, ent in enumerate(result_entities)])
     result = QA_reformat_based_on_entity(question, answer, entities_text, temperature, max_tokens, engine)
-    
     return result
-
-def path_sampling(path_all, question, answer, topK_reasoning_paths, max_path_number_per_group = 50, engine = "gpt-4o", logger = None):
-    # path_all is a list of list, each list is a reasoning path
-    # divide the path_all into different groups, paths with same beginning and end are in the same group
-    path_groups = {}
-    for path in path_all:
-        if len(path) < 2:
-            continue
-        path_key = (path[0], path[-1])
-        if path_key not in path_groups:
-            path_groups[path_key] = []
-        path_groups[path_key].append(path)
-    # traverse the path_groups, and sample topK reasoning paths from each group
-    sampled_paths = []
-    for path_key in path_groups:
-        if logger is not None:
-            logger.info(f"Sampling for Path group: {path_key}")
-        # if the number of paths in the group is more than max_path_number_per_group
-        # randomly sample max_path_number_per_group paths from the group before use LLM to futher sample
-        if len(path_groups[path_key]) > max_path_number_per_group:
-            path_groups[path_key] = random.sample(path_groups[path_key], max_path_number_per_group)
-        text_for_group_paths = '\n'.join([str(idx+1) + ':' + '->'.join(inner_list) for idx,inner_list in enumerate(path_groups[path_key])])
-        # get the sampled paths in json format
-        result_for_group = most_correlated_path_selection(question, text_for_group_paths, answer, topK=topK_reasoning_paths, engine=engine)
-        # for each path_i in result_for_group["Paths"], add path_i["path"] to sampled_paths
-        for path_i in result_for_group["Paths"]:
-            sampled_paths.append(path_i["path"].split('->'))
-    return sampled_paths
-
-def llm_generate_answer_with_reasoning(
-    question,
-    options,
-    reasoning,
-    engine = 'gpt-4'
-):
-    prompt = f"""
-You are an expert in the medical domain. You need to answer the following question based on the provided reasoning.
-YOU MUST USE THE PROVIDED REASONING TO ANSWER THE QUESTION.
-If the answer choices are provided, please choose ONE answer from the answer choices.
-
-Question:
-{question}
-{options}
-Reasoning:
-{reasoning}
-"""
-    response = run_llm(prompt, engine=engine)
-    return response
-        
-
-def most_correlated_path_selection(question, paths_text, answer, topK = 2, temperature = 0.0, max_tokens = 4000, engine="gpt-4o"):
-    Reformat_prompt = """ You are a helpful, pattern-following medical assistant.
-    Given a medical question and possible relation paths that link to the answer.
-    Select up to {topK} most correlated entity from the relation paths list based on the question and the answer.
-    If total number of paths is less than {topK}, select all of them.
-    
-    ### Output Format
-    Strictly follow the JSON structure below.
-    ```json
-    {{
-    "Paths": [
-        {{"ranking": "1", "path": "sample_path_1", reason": "reason for choosing this path"}},
-        .....      
-    ]
-    }}
-    ```
-    
-    ### Input:
-    question: {question}
-    answer: {answer}
-    paths: {paths}
-    
-    output:
-    """
-    # convert the list of similar entities to a string
-    prompt = Reformat_prompt.format(question = question, answer = answer, paths=paths_text, topK=topK)
-    result = run_llm(prompt,temperature,max_tokens,engine)
-    result_paths = get_json_from_generated_text(result)
-    return result_paths
-
-def llm_judge_answer(llm_output, answer, engine='gpt-4o'):
-    prompt = f"""
-You are an expert in the medical domain. Given a correct answer, and the answer from medical student.
-You need to judge whether the answer from medical student is correct, by comparing the answer from medical student with the correct answer.
-Your response must be 'True' or 'False'.
-If the answer is correct, please respond with 'True'.
-If the answer is wrong, please respond with 'False'.
-Correct answer:
-{answer}
-Answer from medical student:
-{llm_output}
-"""
-    return run_llm(prompt, engine=engine)
-    
-    

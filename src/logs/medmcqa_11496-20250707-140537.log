@@ -1,0 +1,32 @@
+2025-07-07 14:07:49,070 - INFO - Processing sample id 4.
+2025-07-07 14:07:49,072 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 14:11:11,082 - INFO - Reformated question: Growth hormone has its effect on growth through. The growth is mediated by somatomedins (IGF), which include increased deposition of cartilage (including chondroitin sulfate) and bone with increased proliferation of chondrocytes and osteocytes.
+2025-07-07 14:11:11,083 - INFO - Question entities: ['Growth hormone', 'growth', 'skeletal system', 'cartilage', 'bone', 'chondrocytes', 'osteocytes']
+2025-07-07 14:11:11,083 - INFO - Reformated answer: IGF-1 is the mediator of growth hormone's effect on growth.
+2025-07-07 14:11:11,083 - INFO - Result entities: ['IGF-1']
+2025-07-07 14:11:11,083 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:11,084 - INFO - growth hormone
+2025-07-07 14:11:11,084 - INFO - igf-1
+2025-07-07 14:11:11,084 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:11,084 - INFO - growth
+2025-07-07 14:11:11,084 - INFO - igf-1
+2025-07-07 14:11:11,085 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:11,085 - INFO - skeletal system
+2025-07-07 14:11:11,085 - INFO - igf-1
+2025-07-07 14:11:11,085 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:11,085 - INFO - cartilage
+2025-07-07 14:11:11,085 - INFO - igf-1
+2025-07-07 14:11:11,086 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:11,086 - INFO - bone
+2025-07-07 14:11:11,086 - INFO - igf-1
+2025-07-07 14:11:11,086 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:11,086 - INFO - chondrocytes
+2025-07-07 14:11:11,086 - INFO - igf-1
+2025-07-07 14:11:11,086 - INFO - Error type: NodeNotFound
+2025-07-07 14:11:11,086 - INFO - osteocytes
+2025-07-07 14:11:11,087 - INFO - igf-1
+2025-07-07 14:11:11,087 - INFO - the number of extracted pathes are: 0
+2025-07-07 14:11:11,087 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 14:11:11,087 - INFO - Finished sample id 4 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 14:11:13,032 - INFO - Processing sample id 13.
+2025-07-07 14:11:13,032 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0

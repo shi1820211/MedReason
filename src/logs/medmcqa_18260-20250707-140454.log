@@ -1,0 +1,20 @@
+2025-07-07 14:07:48,915 - INFO - Processing sample id 3.
+2025-07-07 14:07:48,918 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 14:10:50,468 - INFO - Reformated question: Following endaerectomy on the right common carotid, a patient is found to be blind in the right eye. A small thrombus embolized during surgery and lodged in the artery supplying the optic nerve.
+2025-07-07 14:10:50,469 - INFO - Question entities: ['Blindness', 'Thrombus', 'Optic nerve']
+2025-07-07 14:10:50,469 - INFO - Reformated answer: The central aery of the retina would be blocked.
+2025-07-07 14:10:50,469 - INFO - Result entities: ['Central aery of the retina']
+2025-07-07 14:10:50,469 - INFO - Error type: NodeNotFound
+2025-07-07 14:10:50,470 - INFO - blindness
+2025-07-07 14:10:50,470 - INFO - central aery of the retina
+2025-07-07 14:10:50,470 - INFO - Error type: NodeNotFound
+2025-07-07 14:10:50,470 - INFO - thrombus
+2025-07-07 14:10:50,470 - INFO - central aery of the retina
+2025-07-07 14:10:50,470 - INFO - Error type: NodeNotFound
+2025-07-07 14:10:50,470 - INFO - optic nerve
+2025-07-07 14:10:50,470 - INFO - central aery of the retina
+2025-07-07 14:10:50,471 - INFO - the number of extracted pathes are: 0
+2025-07-07 14:10:50,471 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 14:10:50,471 - INFO - Finished sample id 3 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 14:10:52,464 - INFO - Processing sample id 11.
+2025-07-07 14:10:52,464 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0

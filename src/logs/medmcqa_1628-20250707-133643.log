@@ -1,0 +1,29 @@
+2025-07-07 13:38:54,060 - INFO - Processing sample id 4.
+2025-07-07 13:38:54,062 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 13:41:25,755 - INFO - Reformated question: Growth hormone has its effect on growth through the mediation of somatomedins (IGF). The growth is primarily mediated by increased deposition of cartilage (including chondroitin sulfate) and bone, with increased proliferation of chondrocytes and osteocytes.
+2025-07-07 13:41:25,755 - INFO - Question entities: ['Growth hormone', 'skeletal system', 'cartilage', 'bone', 'chondrocytes', 'osteocytes']
+2025-07-07 13:41:25,755 - INFO - Reformated answer: IGF-1 is the mediator through which growth hormone exerts its effect on growth.
+2025-07-07 13:41:25,755 - INFO - Result entities: ['IGF-1']
+2025-07-07 13:41:25,755 - INFO - Error type: NodeNotFound
+2025-07-07 13:41:25,755 - INFO - growth hormone
+2025-07-07 13:41:25,755 - INFO - igf-1
+2025-07-07 13:41:25,755 - INFO - Error type: NodeNotFound
+2025-07-07 13:41:25,755 - INFO - skeletal system
+2025-07-07 13:41:25,755 - INFO - igf-1
+2025-07-07 13:41:25,755 - INFO - Error type: NodeNotFound
+2025-07-07 13:41:25,755 - INFO - cartilage
+2025-07-07 13:41:25,755 - INFO - igf-1
+2025-07-07 13:41:25,755 - INFO - Error type: NodeNotFound
+2025-07-07 13:41:25,755 - INFO - bone
+2025-07-07 13:41:25,755 - INFO - igf-1
+2025-07-07 13:41:25,755 - INFO - Error type: NodeNotFound
+2025-07-07 13:41:25,770 - INFO - chondrocytes
+2025-07-07 13:41:25,770 - INFO - igf-1
+2025-07-07 13:41:25,770 - INFO - Error type: NodeNotFound
+2025-07-07 13:41:25,770 - INFO - osteocytes
+2025-07-07 13:41:25,770 - INFO - igf-1
+2025-07-07 13:41:25,771 - INFO - the number of extracted pathes are: 0
+2025-07-07 13:41:25,771 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 13:41:25,771 - INFO - Finished sample id 4 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 13:41:27,771 - INFO - Processing sample id 10.
+2025-07-07 13:41:27,771 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0

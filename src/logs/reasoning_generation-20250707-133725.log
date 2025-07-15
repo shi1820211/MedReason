@@ -1,0 +1,17 @@
+2025-07-07 13:38:53,551 - INFO - Processing sample id 5.
+2025-07-07 13:38:53,553 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 13:41:12,672 - INFO - Reformated question: Scrub typhus is transmitted by: September 2004
+2025-07-07 13:41:12,672 - INFO - Question entities: ['Scrub typhus', 'September 2004']
+2025-07-07 13:41:12,672 - INFO - Reformated answer: Mite is the vector responsible for transmitting Scrub typhus.
+2025-07-07 13:41:12,672 - INFO - Result entities: ['Mite']
+2025-07-07 13:41:12,672 - INFO - Error type: NodeNotFound
+2025-07-07 13:41:12,672 - INFO - scrub typhus
+2025-07-07 13:41:12,672 - INFO - mite
+2025-07-07 13:41:12,672 - INFO - Error type: NodeNotFound
+2025-07-07 13:41:12,672 - INFO - september 2004
+2025-07-07 13:41:12,672 - INFO - mite
+2025-07-07 13:41:12,672 - INFO - the number of extracted pathes are: 0
+2025-07-07 13:41:12,672 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 13:41:12,672 - INFO - Finished sample id 5 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 13:41:14,700 - INFO - Processing sample id 9.
+2025-07-07 13:41:14,701 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0

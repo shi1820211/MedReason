@@ -1,0 +1,20 @@
+2025-07-07 13:38:54,221 - INFO - Processing sample id 0.
+2025-07-07 13:38:54,221 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
+2025-07-07 13:42:08,124 - INFO - Reformated question: Chronic urethral obstruction due to benign prostatic hyperplasia can lead to changes in the kidney parenchyma. This obstruction, caused by urinary calculi, prostatic hyperplasia, tumors, normal pregnancy, uterine prolapse, or functional disorders, results in hydronephrosis, which is characterized by dilatation of the renal pelvis and calculus, leading to progressive atrophy of the kidney due to obstruction of urine outflow.
+2025-07-07 13:42:08,125 - INFO - Question entities: ['Chronic urethral obstruction', 'Benign prostatic hyperplasia', 'Hydronephrosis']
+2025-07-07 13:42:08,125 - INFO - Reformated answer: The resulting change in the kidney parenchyma is atrophy.
+2025-07-07 13:42:08,125 - INFO - Result entities: ['Atrophy']
+2025-07-07 13:42:08,125 - INFO - Error type: NodeNotFound
+2025-07-07 13:42:08,125 - INFO - chronic urethral obstruction
+2025-07-07 13:42:08,125 - INFO - atrophy
+2025-07-07 13:42:08,125 - INFO - Error type: NodeNotFound
+2025-07-07 13:42:08,126 - INFO - benign prostatic hyperplasia
+2025-07-07 13:42:08,126 - INFO - atrophy
+2025-07-07 13:42:08,126 - INFO - Error type: NodeNotFound
+2025-07-07 13:42:08,126 - INFO - hydronephrosis
+2025-07-07 13:42:08,126 - INFO - atrophy
+2025-07-07 13:42:08,126 - INFO - the number of extracted pathes are: 0
+2025-07-07 13:42:08,126 - INFO - No reasoning path found, can not generate reasoning.
+2025-07-07 13:42:08,126 - INFO - Finished sample id 0 with reasoning: No reasoning path. Can not find path in KG.
+2025-07-07 13:42:10,114 - INFO - Processing sample id 12.
+2025-07-07 13:42:10,114 - INFO - Total API cost so far (accumulated in run_llm calls): 0.0
